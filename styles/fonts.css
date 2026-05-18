@@ -1,0 +1,19 @@
+@font-face{
+    font-family: "fnafFont";
+    src: url("fonts/FiveFontsatFreddy's-Regular.ttf")
+}
+
+@font-face {
+	font-family: "ocra";
+	src: url("fonts/OCRAEXT.TTF");
+}
+
+@font-face {
+    font-family: "consolas";
+    src: url("fonts/consolas.ttf");
+}
+
+@font-face {
+    font-family: "castellar";
+    src: url("fonts/Castellar Regular.ttf");
+}

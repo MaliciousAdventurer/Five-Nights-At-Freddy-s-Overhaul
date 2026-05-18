@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Five Nights At Freddy's</title>
+    <script src="dependencies/jquery.js"></script>
+    <link rel="stylesheet" href="styles/fonts.css">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body onload="loadAssets(); menuWhiteBoxAnimation(); menuFreddyAnimation()">
+    <div id="spriteSheet" style="display: none;"></div>
+    
+    <div id="menu">  
+        <p id="menu_warning">WARNING!<br/><br/>This game contains flashing lights, loud noises, and lots of jumpscares!</p>
+        <p id="menu_nightbegin"></p>
+        <div id="menu_warningbackground"></div>
+        
+        <img id="static_1" class="static" src="assets/Static & Menu/Full Static/12.png">
+        
+        <div id="menu_whitebox"></div>
+        <img id="menu_freddy" src="assets/Static & Menu/Menu/431.png">
+        
+        <p id="menu_title" class="menu_button">Five<br/>Nights<br/>At<br/>Freddy's</p>
+        
+        <p id="menu_newgame" class="menu_button" onclick="startNight(0), ls.setItem('FNAFREVAMPED_night', ' 1')">New Game</p>
+        <p id="menu_continue" class="menu_button" onclick="startNight(parseInt(ls.getItem('FNAFREVAMPED_night')) - 1)">Continue</p>
+        <p id="menu_night6" class="menu_button" onclick="startNight(5)">Night 6</p>
+        <p id="menu_night7" class="menu_button" onclick="startNight(6)">
+            <span>T</span><span>h</span><span>e</span>
+            <span></span><span>T</span><span>r</span><span>u</span><span>e</span><span></span>
+            <span>D</span><span>e</span><span>p</span><span>r</span><span>i</span><span>v</span><span>a</span><span>t</span><span>i</span><span>o</span><span>n</span>
+        </p>
+
+        <p id="menu_arrow">>></p>
+    </div>
+
+    <div id="game">
+        <div id="animlines">
+   
+        </div>
+        
+        <div id="energytext">%100</div>
+        <div id="cameraname">ShowStage</div>
+        
+        <img id="maplayout" src="assets/map.png"></img>
+        <div id="mapcameras">
+            <img class="radaricon" src="assets/Line Icons/freddy_icon.png" id="radariconfreddy">
+            <img class="radaricon" src="assets/Line Icons/bonnie_icon.png" id="radariconbonnie">
+            <img class="radaricon" src="assets/Line Icons/chica_icon.png" id="radariconchica">
+            <img class="radaricon" src="assets/Line Icons/foxy_icon.png" id="radariconfoxy">
+
+            <div id="CAM1A" class="mapcamera" style="left: 31.8%; top: -2%; background-color: red; " onclick="cameraSwitch(this.id)"><span>1A</span><div class="fade-triangle" style="transform: rotate(-50deg) translateZ(-1px); background: linear-gradient(to bottom, rgb(255, 0, 0), rgba(255, 255, 255, 0));"></div></div>
+            <div id="CAM1B" class="mapcamera" style="left: 60%; top: 12%;" onclick="cameraSwitch(this.id)"><span>1B</span><div class="fade-triangle" style="transform: rotate(50deg) translateZ(-1px);"></div></div>
+            <div id="CAM5" class="mapcamera" style="left: 0.5%; top: 30%;" onclick="cameraSwitch(this.id)"><span>5</span><div class="fade-triangle" style="transform: rotate(-150deg) translateZ(-1px);"></div></div>
+            <div id="CAM7" class="mapcamera" style="left: 90%; top: 8%;" onclick="cameraSwitch(this.id)"><span>7</span><div class="fade-triangle" style="transform: rotate(20deg) translateZ(-1px);"></div></div>
+            <div id="CAM1C" class="mapcamera" style="left: 49%; top: 40%;" onclick="cameraSwitch(this.id)"><span>1C</span><div class="fade-triangle" style="transform: rotate(0deg) translateZ(-1px);"></div></div>
+            <div id="CAM3" class="mapcamera" style="left: 24%; top: 58%;" onclick="cameraSwitch(this.id)"><span>3</span><div class="fade-triangle" style="transform: rotate(22deg) translateZ(-1px);"></div></div>
+            <div id="CAM6" class="mapcamera" style="left: 93.5%; top: 52%;" onclick="cameraSwitch(this.id)"><span>6</span><div class="fade-triangle" style="transform: rotate(50deg) translateZ(-1px);"></div></div>
+            <div id="CAM2A" class="mapcamera" style="left: 30%; top: 52%;" onclick="cameraSwitch(this.id)"><span>2A</span><div class="fade-triangle" style="transform: rotate(-20deg) translateZ(-1px);"></div></div>
+            <div id="CAM4A" class="mapcamera" style="left: 70%; top: 52%;" onclick="cameraSwitch(this.id)"><span>4A</span><div class="fade-triangle" style="transform: rotate(20deg) translateZ(-1px);"></div></div>
+            <div id="CAM2B" class="mapcamera" style="left: 38%; top: 78%;" onclick="cameraSwitch(this.id)"><span>2B</span><div class="fade-triangle" style="transform: rotate(30deg) translateZ(-1px);"></div></div>
+            <div id="CAM4B" class="mapcamera" style="left: 61%; top: 78%;" onclick="cameraSwitch(this.id)"><span>4B</span><div class="fade-triangle" style="transform: rotate(-35deg) translateZ(-1px);"></div></div>
+        </div>
+        
+        <div id="cameralines">
+            <div style="background-color: rgb(64, 210, 1); border-radius: 50%; width: 4vw; height: 7vh; opacity: 0.8; left: 4vw; top: 7vh;" id="redcircle"></div>
+        </div>
+
+        <img id="monitorpullup" src="assets/cameraButton.png" >
+        <img id="monitoranim" src="assets/Office/Monitor/1.png" style="display: none;">
+        <div id="freddyflash"></div>
+        <img id="static_3" class="static" src="assets/Static & Menu/Full Static/12.png" style="display: none;">
+
+        <div id="hour"><p id="prevhour">12</p><p>AM</p></div>
+
+        <!-- office -->
+        <div id='officeRoller'>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+            <div class='slice'></div>
+        </div>
+        <div id='cameraRoller'>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+            <div class='slice7'></div>
+        </div>
+        <div id="leftDoorRoller">
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        <div class='slice2'></div>
+        </div>
+        <div id="rightDoorRoller">
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        <div class='slice3'></div>
+        </div>
+        <div id="goldenFreddyRoller">
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        <div class='slice4'></div>
+        </div>
+        <div id="leftButtonsRoller">
+        <div class='slice5'></div>
+        <div class='slice5'></div>
+        <div class='slice5'></div>
+        <div class='slice5'></div>
+        <div class='slice5'></div>
+        </div>
+        <div id="rightButtonsRoller">
+        <div class='slice6'></div>
+        <div class='slice6'></div>
+        <div class='slice6'></div>
+        <div class='slice6'></div>
+        <div class='slice6'></div>
+        </div>
+
+        <!--moving around the office-->
+        <div id="moveLeft"></div>
+        <div id="moveright"></div>
+        <div id="moveLeftSmall"></div>
+        <div id="moverightSmall"></div>
+    </div>
+    
+    <div id="gameover">
+        <img id="static_2" class="static" src="assets/Static & Menu/Full Static/12.png">
+        <div id="gameover_box"></div>
+        <img id="gameover_freddy" src="assets/dead.png">
+    </div>
+    
+    <div id="gamewon" style="display: none;">
+        <div id="gamewontimer"><p>5 AM</p></div>
+        <img id="gamewoncard" onclick="endSound('toreador'), $('#gamewoncard').fadeOut(1000, ()=>{hideElem('gamewon')}),  returnMenu()">
+    </div>
+    
+    <script src="scripts/util.js"></script>   
+    <script src="scripts/assets.js"></script> 
+    <script src="scripts/3d.js"></script>   
+    <script src="scripts/buttons.js"></script>
+    <script src="scripts/menu.js"></script>   
+    <script src="scripts/timer.js"></script>  
+    <script src="scripts/energy.js"></script> 
+    <script src="scripts/camera.js"></script> 
+    <script src="scripts/animatronics.js"></script>
+    <script src="scripts/radar.js"></script>
+    <script src="scripts/night.js"></script>
+</body>
+</html>
