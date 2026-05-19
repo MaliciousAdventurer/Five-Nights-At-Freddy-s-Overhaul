@@ -4,6 +4,7 @@ function returnMenu(){
     animate("static_1", fullStaticAsset, true);
     playSound("menuStatic", menuStatic, 0.08, true)
     elem("gamewontimer").classList.remove("flash")
+    hideElem("gamewon")
 }
 
 //Animates white box going down
